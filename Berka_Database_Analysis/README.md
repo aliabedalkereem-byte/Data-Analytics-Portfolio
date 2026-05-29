@@ -9,8 +9,11 @@ a live academic server, engineering the data through SQL, building a
 complete Power BI model centered on the account entity, and visualizing 
 the bank across 7 interactive dashboard pages.
 
+---
 
 ![Data Model](model_screenshot.png)
+
+---
 ![Dashboard Overview](dashboard_screenshot.png)
 
 ---
