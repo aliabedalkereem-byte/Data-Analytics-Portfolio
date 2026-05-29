@@ -26,4 +26,4 @@ the bank across 7 interactive dashboard pages.
 
 [Dashboard](Project_Dashboard.pbix) 
 
-[Report](Project_Report.docx) 
+[Report](Project_Report.pdf) 
