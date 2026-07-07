@@ -9,13 +9,11 @@ USE sakila;
 SELECT 
 DATE(r.rental_date) AS RentalDate , f.title AS FilmTitle , c.name AS FilmCategory  , concat(CU.first_name,'  ',cu.last_name ) AS CustomerName , ci.city AS StoreCity 
 FROM rental AS r
-
 --  product details
 JOIN  inventory     AS   inv   ON   inv.inventory_id=r.inventory_id
 JOIN  film          AS   f     ON   f.film_id=inv.film_id
 JOIN  film_category AS   fc    ON   fc.film_id=f.film_id
 JOIN  category      AS   c     ON   c.category_id=fc.category_id
-
 -- store & customer
 JOIN  customer  AS   cu    ON   cu.customer_id=r.customer_id
 JOIN  store     As   st   ON   st.store_id=cu.store_id
