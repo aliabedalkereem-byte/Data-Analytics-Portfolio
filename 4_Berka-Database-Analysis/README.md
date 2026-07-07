@@ -20,7 +20,7 @@ the bank across 7 interactive dashboard pages.
 
 ## Project Files
 
-* [SQL Script](https://github.com/aliabedalkereem-byte/Data-Analytics-Portfolio/tree/main/4_Berka_Database_Analysis/Berka_SQL_Script.sql)
-* [CSV Files](https://github.com/aliabedalkereem-byte/Data-Analytics-Portfolio/tree/main/4_Berka_Database_Analysis/CSV_Files)
-* [Dashboard](https://github.com/aliabedalkereem-byte/Data-Analytics-Portfolio/tree/main/4_Berka_Database_Analysis/Berka_Project_Dashboard.pbix)
-* [Report](https://github.com/aliabedalkereem-byte/Data-Analytics-Portfolio/tree/main/4_Berka_Database_Analysis/Berka_Project_Report.pdf)
+* [SQL Script](https://github.com/aliabedalkereem-byte/Data-Analytics-Portfolio/tree/main/4_Berka-Database-Analysis/Berka_SQL_Script.sql)
+* [CSV Files](https://github.com/aliabedalkereem-byte/Data-Analytics-Portfolio/tree/main/4_Berka-Database-Analysis/CSV_Files)
+* [Dashboard](https://github.com/aliabedalkereem-byte/Data-Analytics-Portfolio/tree/main/4_Berka-Database-Analysis/Berka_Project_Dashboard.pbix)
+* [Report](https://github.com/aliabedalkereem-byte/Data-Analytics-Portfolio/tree/main/4_Berka-Database-Analysis/Berka_Project_Report.pdf)
