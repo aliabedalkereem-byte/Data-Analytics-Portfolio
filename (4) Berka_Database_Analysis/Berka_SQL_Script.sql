@@ -9,7 +9,7 @@
 -- ============================================
 
 
--- ((basic))
+-- (( BASIC )) 
 SELECT
  c.account_id, c.frequency , extract(year from c.date ) as Createdyear, 
  d.A3 as region,
@@ -28,13 +28,13 @@ from financial.account as c
                 )   as p on p.account_id=c.account_id;
 
 
-
-SELECT max(date )
+-- The last date in the database
+SELECT max(date)
 FROM financial.trans;
 
 
 
- -- ((region))
+ -- ((REGION))
  select   A3 as region, count(A2) as NumberOfDistrict, sum(A4) as total_population, 
  (SUM(A11 * A4) / SUM(A4)) as avg_salary, (SUM(A14 * A4 / 1000) / SUM(A4) )* 1000 as entrepreneurs_per_1000,
  (SUM(A10 * A4) / SUM(A4)) as urban_ratio, SUM(COALESCE(A15, A16)) as num_crimes_95, sum(A16) as num_crimes_96,
@@ -46,7 +46,7 @@ FROM financial.trans;
 
  
 
--- ((order))
+-- ((ORDER))
 SELECT c.account_id,
   case when (ord.Sipo_Order + ord.Uver_Order + ord.Leasing_Order + ord.Pojistne_Order + ord.Other_Order) <>0 then 'yes' else 'No' end as ORDERS ,
   ord.Sipo_Order, ord.Uver_Order, ord.Leasing_Order, ord.Pojistne_Order, ord.Other_Order,
@@ -67,7 +67,7 @@ from financial.account as c
 
 
 
--- ((loan))
+-- ((LOAN))
 SELECT c.account_id,
     (case when  l.status is NULL then 'NO' else 'YES' end) as Loan ,
     l.status as LoanStatus, l.date as LoanDate ,l.duration as LoanDuration, l.payments as LoanPayments, l.amount as loanAmount 
@@ -77,9 +77,9 @@ from financial.account as c
 
 
 
--- transfer/cash  ((in))
-  SET SESSION sql_big_selects = 1; 
+-- Transfer/Cash  ((IN))
 WITH
+-- D : deposit
 D_mode AS (
     SELECT account_id, amount, COUNT(*) AS D_count_of_the_mode,
      ROW_NUMBER() OVER (PARTITION BY account_id ORDER BY COUNT(*) DESC, amount DESC) as frequency_rank
@@ -93,8 +93,13 @@ D_amount AS (
         MIN(amount) as D_min_val,
         MAX(amount) as D_max_val,
         COUNT(*) as D_total_count,
-        ROUND(DATEDIFF(MAX(date), MIN(date)) / 365.25, 0) AS D_Total_Years,
-        SUM(amount) / NULLIF(DATEDIFF(MAX(date), MIN(date)) / 30, 0) as D_monthly_average
+        ROUND(DATEDIFF(MAX(date), MIN(date)) / 30, 0) AS D_Total_Months,
+		SUM(amount) as Total_D,
+        CASE 
+            WHEN (DATEDIFF(MAX(date), MIN(date)) / 30) > 4 
+            THEN SUM(amount) / (DATEDIFF(MAX(date), MIN(date)) / 30) 
+            ELSE 0 
+		END AS D_monthly_average
     FROM financial.trans
     WHERE type = 'PRIJEM' and operation = 'VKLAD'
     GROUP BY account_id
@@ -121,15 +126,16 @@ salary as (
 SELECT 
     d.account_id,
     d.D_total_count,
-    d.D_Total_Years,
+    d.D_Total_Months,
+    d.Total_D,
     d.D_monthly_average,
     d.D_min_val,
     d.D_max_val,
 	case when m.D_count_of_the_mode>1 then  m.D_count_of_the_mode else 0 end as D_count_of_the_mode,
     CASE WHEN m.D_count_of_the_mode > 1 THEN CAST(m.amount AS CHAR) ELSE '' END AS D_amount_mode,
-    P.pension,
-    s.base_salary,
-    s.peak_salary
+    COALESCE(P.pension,0) as Pension,
+    COALESCE(s.base_salary,0) as Base_Salary,
+    COALESCE(s.peak_salary,0) as Peak_Salary
 FROM D_amount as d
   left JOIN D_mode as m on d.account_id = m.account_id and m.frequency_rank = 1
   left JOIN Pension as P on d.account_id = P.account_id
@@ -138,94 +144,81 @@ FROM D_amount as d
  
  
  
- 
-    
--- ((out))
-SET SESSION sql_big_selects = 1;
-WITH 
-    -- monthly transfer  
-Monthly_T AS (
-    SELECT account_id,
-max(case when type='VYDAJ' and operation='PREVOD NA UCET' and K_symbol='UVER' Then amount else 0 end)as UVER_T,
-max(case when type='VYDAJ' and operation='PREVOD NA UCET' and K_symbol='POJISTNE' Then amount else 0 end)as POJISTNE_T,
-max(case when type='VYDAJ' and operation='PREVOD NA UCET' and K_symbol='SIPO' Then amount else 0 end)as SIPO_T,
-max(case when type='VYDAJ' and operation='PREVOD NA UCET' and K_symbol is null Then amount else 0 end)as NULL_T,
-max(case when type='VYDAJ' and operation='PREVOD NA UCET' and K_symbol=' ' Then amount else 0 end)as BLANK_T,
-   ( max(case when type='VYDAJ' and operation='PREVOD NA UCET' and K_symbol='UVER' Then amount else 0 end)+
-     max(case when type='VYDAJ' and operation='PREVOD NA UCET' and K_symbol='POJISTNE' Then amount else 0 end)+
-     max(case when type='VYDAJ' and operation='PREVOD NA UCET' and K_symbol='SIPO' Then amount else 0 end)+
-     max(case when type='VYDAJ' and operation='PREVOD NA UCET' and K_symbol is null Then amount else 0 end)+
-     max(case when type='VYDAJ' and operation='PREVOD NA UCET' and K_symbol=' ' Then amount else 0 end) ) as TotalMonthly_T
-  FROM financial.trans
-  GROUP BY account_id
-),  
--- fees on account 
+  -- Transfer/Cash  ((OUT))
+ WITH 
+Transfer AS (
+   select account_id ,
+          ROUND(DATEDIFF(MAX(date), MIN(date)) / 30, 0) AS T_Total_Months,
+          sum(amount) as T_Total_amount,
+          CASE 
+	           WHEN ROUND(DATEDIFF(MAX(date), MIN(date)) / 30, 0) > 4
+	           THEN    sum(amount) / ROUND(DATEDIFF(MAX(date), MIN(date)) / 30, 0) 
+	           ELSE 0 
+		  END AS T_monthly_average
+
+    from financial.trans
+	where  type ='VYDAJ' and operation='PREVOD NA UCET'
+	group by account_id
+),   
 Fees AS (
          SELECT account_id,
 	MAX(CASE WHEN type='VYDAJ' AND operation='VYBER' AND k_symbol='SLUZBY' THEN amount ELSE 0 END) AS FeesOnTheAccount
         FROM financial.trans
         GROUP BY account_id
 ),
--- random whithdrawal 
-CashOut AS (
+Withdrawal  AS (
      select account_id,
-  ROUND(DATEDIFF(MAX(date), MIN(date)) / 365.25, 0) AS W_Total_Years,
-  SUM(amount) / NULLIF(DATEDIFF(MAX(date), MIN(date)) / 30, 0) as W_monthly_avg,
-  count(amount) as W_count
-    from financial.trans 
-    where  type IN ('VYDAJ', 'VYBER') AND operation = 'VYBER' AND (k_symbol IS NULL OR k_symbol = '' OR k_symbol = ' ')
-    group by account_id
+            ROUND(DATEDIFF(MAX(date), MIN(date)) / 30, 0) AS W_Total_Months,
+			count(amount) as W_count,
+            sum(amount) as W_Total_amount,
+            CASE 
+	             WHEN (DATEDIFF(MAX(date), MIN(date)) / 30) > 4
+	             THEN SUM(amount) / (DATEDIFF(MAX(date), MIN(date)) / 30) 
+	             ELSE 0 
+	        END AS W_monthly_average
 
-),
--- withdrawal for sipo
-SipoOut AS (
-	SELECT account_id,
-     COALESCE(AVG(CASE WHEN type = 'VYDAJ' AND operation = 'VYBER' AND k_symbol = 'SIPO' THEN amount END), 0) AS avg_sipo_out
-	FROM financial.trans
-	GROUP BY account_id
-)
+	   from financial.trans 
+      WHERE type IN ('VYDAJ', 'VYBER') 
+  AND operation IN ('VYBER', 'VYBER KARTOU') 
+  AND (k_symbol <> 'SLUZBY' OR k_symbol IS NULL OR k_symbol = '')
+      group by account_id
 
+ )
 SELECT 
-    m.account_id,
-    m.TotalMonthly_T,
-    m.UVER_T,
-    m. POJISTNE_T,
-    m.SIPO_T,
-    m.NULL_T,
-    m.BLANK_T,
-    f.FeesOnTheAccount,
-    c.W_count,
-    c.W_Total_Years,
-    c.W_monthly_avg,
-    s.avg_sipo_out
-FROM Monthly_T as  m
-   LEFT JOIN Fees as f ON m.account_id = f.account_id
-   LEFT JOIN CashOut as c ON m.account_id = c.account_id
-   LEFT JOIN SipoOut as s ON m.account_id = s.account_id;
+ f.account_id ,
+ f.FeesOnTheAccount ,
+  COALESCE(t.T_Total_Months,0) as T_Total_Months,
+  COALESCE(t.T_Total_amount ,0) as T_Total_amount,
+  COALESCE(t.T_monthly_average,0) as T_monthly_average ,
+  COALESCE(w.W_Total_Months,0) as W_Total_Months ,
+  COALESCE(w.W_count,0) as W_count,
+  COALESCE(w.W_Total_amount,0) as W_Total_amount,
+  COALESCE(w.W_monthly_average ,0) as W_monthly_average
+ 
+FROM Fees as  f 
+   LEFT JOIN Transfer as t ON t.account_id = f.account_id
+   LEFT JOIN Withdrawal as w ON w.account_id = f.account_id;
+    
     
     
     
 	
--- ((balance))
-SELECT 
-    account_id, 
-    EXTRACT(YEAR FROM date) AS yr, 
-    EXTRACT(MONTH FROM date) AS mon, 
-    MIN(balance) AS min_balance, 
-    MAX(balance) AS max_balance
-FROM financial.trans
-GROUP BY account_id,yr,mon 
-order by account_id ,yr,mon;
+-- ((BALANCE))
+select d.account_id , d.yr, d.mon ,d.date,
+ sum(d.m_in) as M_IN ,sum(d.m_out) as M_OUT,  sum(d.m_in) -  sum(d.m_out)   as Balance 
 
-
-
-
-
-
-
-
-
-
+ from (SELECT 
+          account_id, date,
+          EXTRACT(YEAR FROM date) AS yr, 
+          EXTRACT(MONTH FROM date) AS mon,
+          type,
+          case when type ='PRIJEM' then sum(amount)  else 0 end AS m_in, 
+          case when type IN ('VYDAJ', 'VYBER') then sum(amount)  else 0 end AS m_out,
+          sum(amount) AS total
+		FROM financial.trans
+		GROUP BY account_id,yr,mon ,type
+	    order by account_id ,yr,mon  )   as d
+group by d.account_id ,d.yr,d.mon;
 
 
 
