@@ -20,10 +20,7 @@ the bank across 7 interactive dashboard pages.
 
 ## Project Files
 
-[SQL Script](SQL_Script.sql) 
-
-[CSV Files](CSV_Files/) 
-
-[Dashboard](Project_Dashboard.pbix) 
-
-[Report](Project_Report.pdf) 
+[SQL Script](SQL_Script.sql)
+[CSV Files](CSV_Files/)
+[Dashboard](Project_Dashboard.pbix)
+[Report](Project_Report.pdf)
