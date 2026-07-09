@@ -1,3 +1,6 @@
+## Berka Database — Deep Analysis
+
+A deeper follow-up to the earlier Berka analysis, focused on three specific aspects: region, money flow, and loan suitability. For each, specific questions were defined, then explored using statistical and mathematical methods to extract clear, decision-ready insights.
 
 ## Project Notebooks
 
