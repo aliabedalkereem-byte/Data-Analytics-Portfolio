@@ -15,6 +15,13 @@ Click the badges below to open the fully interactive analysis environments direc
 * **LOAN SUITABILITY INDEX**  
   [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/aliabedalkereem-byte/Data-Analytics-Portfolio/blob/main/5_Berka-Database-Deep-Analysis/LOAN_SUITABILITY_INDEX.ipynb)
 
+--
+---
+
+ **Project Files:**
+
+- [CSV Files](./CSV_files)
+- [Analysis Report](./ANALYSIS%20REPORT.pdf)
 
 
 
