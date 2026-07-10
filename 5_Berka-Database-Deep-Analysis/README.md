@@ -3,7 +3,7 @@
 A deeper follow-up to the earlier Berka analysis, focused on three specific aspects of the bank: region, money flow, and loan. For each, specific questions were defined, then explored using statistical and mathematical methods to extract clear answers and insights.
 
 
-For each aspect, the Google Colab notebook follow a clear framework: defining a specific business objective, extracting the required dataset, applying targeted analysis (such as Chi-Square, Wilcoxon, and Logistic Regression,...), and interpreting the final outputs. The final written report brings these components together, providing a complete, step-by-step documentation of the entire analytical process.
+For each aspect, the Google Colab notebook follow a clear framework: defining a specific business objective, extracting the required dataset, applying targeted analysis (such as Chi-Square, Kruskal-Wallis, and Logistic Regression,...), and interpreting the final outputs. The final written report brings these components together, providing a complete, step-by-step documentation of the entire analytical process.
 
 
 ---
