@@ -40,7 +40,7 @@ Extracted Data Structure:
 
 
 ## 2 · Interactive Visualization
-Two pages built on one master table with one row per account using Plain HTML, CSS and JavaScript: no server, opens by double-click → [`Data_Visualization/`](https://aliabedalkereem-byte.github.io/Data-Analytics-Portfolio/)
+Two pages built on one master table with one row per account using Plain HTML, CSS and JavaScript: click → [`Data_Visualization/`](https://aliabedalkereem-byte.github.io/Data-Analytics-Portfolio/)
 
 
 ![Overview](https://github.com/aliabedalkereem-byte/Data-Analytics-Portfolio/blob/main/1.Berka_Database_Exploring/Images/Overview.png)
