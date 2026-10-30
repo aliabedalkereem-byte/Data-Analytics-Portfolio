@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Berka Database visualization</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Icon sprite -->
+ <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+   <defs>
+     <symbol id="i-bank" viewBox="0 0 24 24"><path d="M3 10l9-6 9 6M5 10v8M10 10v8M14 10v8M19 10v8M3 20h18"/></symbol>
+     <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+     <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></symbol>
+     <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.8 3-6 6.5-6s6.5 2.2 6.5 6M16 4.8a3.5 3.5 0 010 6.4M18 14.4c2.2.7 3.5 2.6 3.5 5.6"/></symbol>
+     <symbol id="i-cal" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></symbol>
+     <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-6 7-11a7 7 0 10-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+     <symbol id="i-coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M14.5 9.2c-.5-.8-1.4-1.2-2.5-1.2-1.5 0-2.5.8-2.5 1.9 0 2.7 5.2 1.3 5.2 4 0 1.1-1.1 2-2.7 2-1.2 0-2.2-.5-2.7-1.4M12 6v2M12 16v2"/></symbol>
+     <symbol id="i-swap" viewBox="0 0 24 24"><path d="M4 8h14M14 4l4 4-4 4M20 16H6M10 12l-4 4 4 4"/></symbol>
+     <symbol id="i-pie" viewBox="0 0 24 24"><path d="M12 3v9h9"/><circle cx="12" cy="12" r="9"/></symbol>
+     <symbol id="i-bars" viewBox="0 0 24 24"><path d="M5 20V10M12 20V4M19 20v-7"/></symbol>
+     <symbol id="i-trend" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8M15 7h6v6"/></symbol>
+     <symbol id="i-table" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 10v10"/></symbol>
+     <symbol id="i-out" viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></symbol>
+   </defs>
+ </svg>
+
+ <div class="app">
+    <!-- ===================== Sidebar =============================-->
+   <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark"><svg class="ico"><use href="#i-bank"/></svg></span>
+        <div><b>Berka Bank</b><small>Data visualization </small></div>
+      </div>
+      <nav class="nav" aria-label="Pages">
+        <button class="nav-btn is-active" data-page="overview"><svg class="ico"><use href="#i-grid"/></svg>Overview</button>
+        <button class="nav-btn" data-page="account"><svg class="ico"><use href="#i-user"/></svg>Single account</button>
+      </nav>
+      <div class="source">
+        <h3><b>Data source</b></h3>
+        <span>Berka database:</span>
+        <p> A real-world relational banking dataset from a Czech bank,
+          representing the full operational structure of the bank.
+          The data spans the period from 1993 to 1998.</p>
+        
+     </div>
+   </aside>
+
+   <main class="main">    
+     <!-- ======================= PAGE 1: OVERVIEW =========================== -->
+      <section class="page is-active" id="page-overview">
+        <header class="page-head">
+          <div><h1>Overview</h1><p id="page-sub">All accounts</p></div>
+          <div class="filter-bar" id="filter-bar"></div>
+          <div class="chips"><span class="chip"><svg class="ico"><use href="#i-cal"/></svg>1/1/1993 – 31/12/1998</span></div>
+        </header>
+
+        <!-- Top KPIs -->
+        <div class="kpis">
+          <article class="kpi">
+            <span class="kpi-ico"><svg class="ico"><use href="#i-users"/></svg></span>
+           <div><span class="kpi-label">Total accounts</span><b class="kpi-value" id="kpi-total"></b><small id="kpi-total-sub"></small></div>
+          </article>
+
+          <article class="kpi">
+            <span class="kpi-ico"><svg class="ico"><use href="#i-swap"/></svg></span>
+            <div><span class="kpi-label">Accounts with standing orders</span><b class="kpi-value" id="kpi-orders"></b><small id="kpi-orders-sub"></small></div>
+          </article>
+
+          <article class="kpi">
+            <span class="kpi-ico"><svg class="ico"><use href="#i-bank"/></svg></span>
+            <div><span class="kpi-label">Accounts with a loan</span><b class="kpi-value" id="kpi-loans"></b><small id="kpi-loans-sub"></small></div> 
+          </article>
+        </div>
+
+        <div class="grid">
+
+         <!-- 1. Created year -->
+         <article class="card span-4">
+           <header class="card-head"><h2><svg class="ico"><use href="#i-bars"/></svg>Accounts by year opened</h2><span class="tag" id="avg-year"></span></header>
+           <div id="chart-years" class="fill"></div>
+         </article>
+
+         <!-- 3. Regions -->
+         <article class="card span-5">
+           <header class="card-head"><h2><svg class="ico"><use href="#i-pin"/></svg>Accounts by region</h2>
+            <button class="btn" id="btn-regions"><svg class="ico"><use href="#i-table"/></svg>Full region table</button></header>
+           <div id="chart-regions" class="fill spread"></div>
+         </article>
+
+         <!-- 2. Gender and age -->
+         <article class="card span-3">
+           <header class="card-head"><h2><svg class="ico"><use href="#i-users"/></svg>Gender and age</h2></header>
+           <div class="two-col">
+             <div class="col-top"><p class="sub">Gender</p><div id="donut-gender" class="donut-col"></div></div>
+             <div class="col-bottom"><p class="sub">Age group</p><div id="donut-age" class="donut-col"></div></div>
+           </div>
+         </article>
+
+         
+         <!-- 4.Fees  -->
+         <article class="card span-4">
+           <header class="card-head"><h2><svg class="ico"><use href="#i-coin"/></svg>Account fees</h2></header>
+           <div class="big"><span>Collected per month</span><b id="fees-total"></b></div>
+           <div id="fees-table" class="push-down"></div>
+         </article>
+
+         <!-- 5. Services -->
+         <article class="card span-5">
+           <header class="card-head"><h2><svg class="ico"><use href="#i-swap"/></svg>Orders and loans</h2></header>
+           <p class="sub">Standing orders by type (accounts using each)</p><div id="chart-orders"></div>
+           <p class="sub" id="loan-title">Loans by status</p><div id="loan-bar"></div>
+         </article>
+
+         <!-- 6. Money -->
+         <article class="card span-3">
+           <header class="card-head"><h2><svg class="ico"><use href="#i-pie"/></svg>Money</h2></header>
+           <p class="sub">Income sources</p>
+           <div id="donut-income" class="donut-col"></div>
+           <div class="mini-group">
+             <p class="sub">Monthly averages, per account</p>
+             <div class="mini-row">
+               <div class="mini"><span>Avg monthly income</span><b id="avg-income"></b></div>
+               <div class="mini"><span>Avg monthly spending</span><b id="avg-spend"></b></div>
+             </div>
+           </div>
+         </article>
+
+        </div>
+      </section>
+
+
+
+
+      <!-- ================= PAGE 2: SINGLE ACCOUNT ================= -->
+      <section class="page" id="page-account">
+        <header class="page-head">
+          <div><h1>Single account</h1><p id="acc-sub"></p></div>
+          <div class="picker">
+            <button class="btn btn-dark" id="acc-prev" aria-label="Previous account">&lsaquo;</button>
+            <input id="acc-input" type="number" min="1" aria-label="Account number">
+            <button class="btn btn-dark" id="acc-next" aria-label="Next account">&rsaquo;</button>
+            <button class="btn btn-dark" id="acc-random">Random</button>
+          </div>
+        </header>
+
+       <p class="hint" id="acc-hint" hidden></p>
+
+       <!-- Money in / money out of this account (filled by app.js) -->
+       <div class="flows">
+         <article class="flow-card">
+           <header class="flow-head"><i class="dot dot-in"></i>Income sources</header>
+           <div class="flow-cells" id="acc-income"></div>
+         </article>
+         <article class="flow-card">
+           <header class="flow-head"><i class="dot dot-out"></i>Outflow</header>
+           <div class="flow-cells" id="acc-outflow"></div>
+         </article>
+       </div>
+
+        <div class="grid grid-acc">
+          <article class="card span-3">
+            <header class="card-head"><h2><svg class="ico"><use href="#i-user"/></svg>Owner</h2></header>
+            <dl class="dl" id="acc-owner"></dl>
+          </article>
+
+          <article class="card span-9">
+            <header class="card-head"><h2><svg class="ico"><use href="#i-trend"/></svg>Money in, out and net, per month</h2></header>
+            <div id="acc-chart" class="fill"></div>
+          </article>
+
+          <article class="card span-4">
+            <header class="card-head"><h2><svg class="ico"><use href="#i-coin"/></svg>Income Details</h2></header>
+            <div class="info-list" id="acc-details"></div>
+          </article>
+
+
+         <article class="card span-4">
+           <header class="card-head"><h2><svg class="ico"><use href="#i-swap"/></svg><span id="acc-orders-title">Standing orders</span></h2></header>
+           <div id="acc-orders" class="fill spread"></div>
+         </article>
+
+         <article class="card span-4">
+           <header class="card-head"><h2><svg class="ico"><use href="#i-bank"/></svg>Loan</h2></header>
+           <dl class="dl" id="acc-loan"></dl>
+         </article>
+
+        </div>
+      </section>
+
+    </main>
+ </div>
+
+
+
+  <!-- Regions table dialog -->
+  <dialog id="regions-dialog">
+    <div class="dlg-head">
+      <h2>Regions: summary table</h2><button class="btn" id="regions-close">Close</button>
+    </div>
+    <p class="legend-note">Each bar shows the value compared with the highest region in the same column.</p>
+   <div class="table-wrap">
+     <table class="reg-table" id="regions-table"></table>
+   </div>
+  </dialog>
+
+  <div id="tip" class="tip" hidden></div>
+
+  <!-- the data (ACCOUNTS + REGIONS), then all the logic code -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

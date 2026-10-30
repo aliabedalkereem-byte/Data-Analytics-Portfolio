@@ -1,0 +1,9 @@
+Region,Number_Of_District,Total_Population,Avg_Salary,Entrepreneurs_Per_1000,Urban_Ratio,Num_Crimes_95,Num_Crimes_96,Avg_Unemployment_95,Avg_Unemployment_96
+central Bohemia,12,1105234,"$9,450.53",129,54.42,40624,43447,2.4,2.9
+east Bohemia,11,1234781,"$8,689.81",115,64.55,30420,30646,2.3,3.0
+north Bohemia,10,1178977,"$9,348.22",112,81.15,48634,48380,4.8,5.9
+north Moravia,11,1970302,"$9,372.49",100,70.52,69151,67917,4.8,5.7
+Prague,1,1204953,"$12,541.00",167,100.00,85677,99107,0.2,0.4
+south Bohemia,8,700595,"$9,020.86",124,63.68,17927,18173,2.2,2.8
+south Moravia,14,2054989,"$8,925.09",118,60.81,52780,53841,3.2,3.8
+west Bohemia,10,859306,"$9,233.57",115,71.95,24769,25863,2.1,2.6
