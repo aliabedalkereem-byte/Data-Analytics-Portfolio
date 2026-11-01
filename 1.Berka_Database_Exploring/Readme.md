@@ -30,6 +30,10 @@ This project delivers two things:
 ## 1 · Data 
 Data was extracted with SQL from a public MySQL server (Czech Technical University, Prague) into clean CSV tables.
 
+The modeling process started from the business itself. The account was identified as the core entity - it is the point where every relationship between the bank and its clients exists. Everything else was built around it.
+For each account, the model captures the owner’s demographics (gender, age, region), financial behavior (incoming, outgoing, balance) and product relationships (loans, orders). The result is a complete profile of the bank’s activity: not isolated tables, but a connected whole centered on the account.
+
+
 Database structure:
 
 ![Database structure](https://github.com/aliabedalkereem-byte/Data-Analytics-Portfolio/blob/main/1.Berka_Database_Exploring/Images/Database_Structure.png)
