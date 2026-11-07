@@ -29,7 +29,7 @@ Can a bank tell, **before** granting a loan, whether the client will repay it or
  [**Full Report**](Project_Report.pdf)
 
  
- [**Colab Notebook**](https://colab.research.google.com/github/aliabedalkereem-byte/Data-Analytics-Portfolio/blob/main/2.Berka_Database_LoanAnalysis/LoanAnalysis.ipynb)
+ [**LoanAnalysis Notebook**](https://colab.research.google.com/github/aliabedalkereem-byte/Data-Analytics-Portfolio/blob/main/2.Berka_Database_LoanAnalysis/LoanAnalysis.ipynb)
 [![Open in colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/aliabedalkereem-byte/Data-Analytics-Portfolio/blob/main/2.Berka_Database_LoanAnalysis/LoanAnalysis.ipynb)
 
 
